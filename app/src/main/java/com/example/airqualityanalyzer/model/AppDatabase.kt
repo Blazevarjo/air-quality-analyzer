@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.airqualityanalyzer.model.dao_interfaces.SensorDao
-import com.example.airqualityanalyzer.model.dao_interfaces.SensorDataDao
-import com.example.airqualityanalyzer.model.dao_interfaces.StationDao
+import com.example.airqualityanalyzer.model.daoInterfaces.SensorDao
+import com.example.airqualityanalyzer.model.daoInterfaces.SensorDataDao
+import com.example.airqualityanalyzer.model.daoInterfaces.StationDao
 
 @Database(entities = [Station::class, Sensor::class, SensorData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

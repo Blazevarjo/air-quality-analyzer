@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model.dao_interfaces
+package com.example.airqualityanalyzer.model.daoInterfaces
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -15,7 +15,7 @@ interface SensorDao {
     @Delete
     suspend fun deleteSensor(sensor: Sensor)
 
-    @Query("SELECT * FROM sensor WHERE StationId = :stationId")
+    @Query("SELECT * FROM sensor WHERE stationId = :stationId")
     fun stationSensors(stationId: Int): List<Sensor>
 
 }

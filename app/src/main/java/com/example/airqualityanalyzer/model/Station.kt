@@ -5,12 +5,12 @@ import androidx.room.Entity
 
 @Entity(tableName = "station")
 data class Station (
-    val Id: Int,
-    val StationName: String,
-    val GegrLat: Double,
-    val GegrLon: Double,
+    val id: Int,
+    val stationName: String,
+    val gegrLat: Double,
+    val gegrLon: Double,
     @Embedded
-    val City: City,
-    val AddressStreet: String?
+    val city: City,
+    val addressStreet: String?
 )
 

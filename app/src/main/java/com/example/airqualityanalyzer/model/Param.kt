@@ -1,8 +1,8 @@
 package com.example.airqualityanalyzer.model
 
 data class Param (
-    val ParamName: String,
-    val ParamFormula: String,
-    val ParamCode: String,
-    val IdParam: Int
+    val paramName: String,
+    val paramFormula: String,
+    val paramCode: String,
+    val idParam: Int
 )

@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model.dao_interfaces
+package com.example.airqualityanalyzer.model.daoInterfaces
 
 import androidx.room.Dao
 import androidx.room.Delete

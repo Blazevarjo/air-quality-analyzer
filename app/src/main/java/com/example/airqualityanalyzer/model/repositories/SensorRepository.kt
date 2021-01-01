@@ -1,8 +1,7 @@
 package com.example.airqualityanalyzer.model.repositories
 
-import androidx.lifecycle.MutableLiveData
 import com.example.airqualityanalyzer.model.Sensor
-import com.example.airqualityanalyzer.model.dao_interfaces.SensorDao
+import com.example.airqualityanalyzer.model.daoInterfaces.SensorDao
 
 class SensorRepository(private val sensorDao: SensorDao) {
 

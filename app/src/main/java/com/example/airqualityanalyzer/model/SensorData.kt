@@ -9,16 +9,16 @@ import java.util.*
     foreignKeys = [
         ForeignKey(
             entity = Sensor::class,
-            parentColumns = ["Id"],
-            childColumns = ["SensorId"],
+            parentColumns = ["id"],
+            childColumns = ["sensorId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class SensorData (
     @PrimaryKey(autoGenerate = true)
-    val Id: Int,
-    val SensorId: Int,
-    val Date: Date,
+    val id: Int,
+    val sensorId: Int,
+    val date: Date,
     val value: Double
 )

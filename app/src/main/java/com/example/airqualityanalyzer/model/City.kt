@@ -3,8 +3,8 @@ package com.example.airqualityanalyzer.model
 import androidx.room.Embedded
 
 data class City (
-    val Id: Int,
-    val Name: String,
+    val id: Int,
+    val name: String,
     @Embedded
-    val Commune: Commune
+    val commune: Commune
 )

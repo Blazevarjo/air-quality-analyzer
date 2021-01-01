@@ -10,15 +10,15 @@ import androidx.room.ForeignKey.CASCADE
     foreignKeys = [
         ForeignKey(
             entity = Station::class,
-            parentColumns = ["Id"],
-            childColumns = ["StationId"],
+            parentColumns = ["id"],
+            childColumns = ["stationId"],
             onDelete = CASCADE
         )
     ]
 )
 data class Sensor (
-    val Id: Int,
-    val StationId: Int,
+    val id: Int,
+    val stationId: Int,
     @Embedded
-    val Param: Param
+    val param: Param
 )

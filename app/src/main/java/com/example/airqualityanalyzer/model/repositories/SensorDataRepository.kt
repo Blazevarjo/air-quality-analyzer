@@ -1,7 +1,7 @@
 package com.example.airqualityanalyzer.model.repositories
 
 import com.example.airqualityanalyzer.model.SensorData
-import com.example.airqualityanalyzer.model.dao_interfaces.SensorDataDao
+import com.example.airqualityanalyzer.model.daoInterfaces.SensorDataDao
 import java.util.*
 
 class SensorDataRepository(private val sensorDataDao: SensorDataDao) {

@@ -1,7 +1,7 @@
 package com.example.airqualityanalyzer.model.repositories
 
 import com.example.airqualityanalyzer.model.Station
-import com.example.airqualityanalyzer.model.dao_interfaces.StationDao
+import com.example.airqualityanalyzer.model.daoInterfaces.StationDao
 
 class StationRepository(private val stationDao: StationDao) {
 
