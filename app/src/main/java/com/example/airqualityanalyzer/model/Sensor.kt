@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "sensor",
@@ -17,6 +18,7 @@ import androidx.room.ForeignKey.CASCADE
     ]
 )
 data class Sensor (
+    @PrimaryKey
     val id: Int,
     val stationId: Int,
     @Embedded
