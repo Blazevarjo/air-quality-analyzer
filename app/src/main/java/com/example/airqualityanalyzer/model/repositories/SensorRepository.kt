@@ -1,11 +1,12 @@
 package com.example.airqualityanalyzer.model.repositories
 
+import androidx.lifecycle.LiveData
 import com.example.airqualityanalyzer.model.Sensor
 import com.example.airqualityanalyzer.model.daoInterfaces.SensorDao
 
 class SensorRepository(private val sensorDao: SensorDao) {
 
-    fun stationSensors(stationId: Int): List<Sensor> {
+    fun stationSensors(stationId: Int): LiveData<List<Sensor>> {
         return sensorDao.stationSensors(stationId)
     }
 

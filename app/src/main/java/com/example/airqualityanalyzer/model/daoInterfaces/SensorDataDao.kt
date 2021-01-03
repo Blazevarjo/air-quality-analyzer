@@ -1,5 +1,6 @@
 package com.example.airqualityanalyzer.model.daoInterfaces
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -17,6 +18,6 @@ interface SensorDataDao {
     suspend fun deleteSensorData(sensorData: SensorData)
 
     @Query("SELECT * FROM sensor_data WHERE id = :sensorId AND date > :begin AND date < :end")
-    fun sensorDataBetween(sensorId: Int, begin: Date, end: Date): List<SensorData>
+    fun sensorDataBetween(sensorId: Int, begin: Date, end: Date): LiveData<List<SensorData>>
 
 }
