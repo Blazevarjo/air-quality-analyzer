@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/listOfStationsFragment">
+    <fragment
+        android:id="@+id/listOfStationsFragment"
+        android:name="com.example.airqualityanalyzer.view.ListOfStationsFragment"
+        android:label="fragment_list_of_stations"
+        tools:layout="@layout/fragment_list_of_stations" >
+        <action
+            android:id="@+id/action_listOfStationsFragment_to_addStationFragment"
+            app:destination="@id/addStationFragment" />
+        <action
+            android:id="@+id/action_listOfStationsFragment_to_graphFragment"
+            app:destination="@id/graphFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStationFragment"
+        android:name="com.example.airqualityanalyzer.view.AddStationFragment"
+        android:label="fragment_add_station"
+        tools:layout="@layout/fragment_add_station" >
+        <action
+            android:id="@+id/action_addStationFragment_to_stationOptionsFragment"
+            app:destination="@id/stationOptionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/graphFragment"
+        android:name="com.example.airqualityanalyzer.view.GraphFragment"
+        android:label="fragment_graph"
+        tools:layout="@layout/fragment_graph" >
+        <action
+            android:id="@+id/action_graphFragment_to_stationOptionsFragment"
+            app:destination="@id/stationOptionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stationOptionsFragment"
+        android:name="com.example.airqualityanalyzer.view.StationOptionsFragment"
+        android:label="fragment_station_options"
+        tools:layout="@layout/fragment_station_options" >
+        <action
+            android:id="@+id/action_stationOptionsFragment_to_listOfStationsFragment"
+            app:destination="@id/listOfStationsFragment" />
+    </fragment>
+</navigation>

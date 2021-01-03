@@ -1,5 +1,6 @@
 package com.example.airqualityanalyzer.model.daoInterfaces
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -16,6 +17,6 @@ interface StationDao {
     suspend fun deleteStation(station: Station)
 
     @Query("SELECT * FROM station")
-    fun allStations(): List<Station>
+    fun allStations(): LiveData<List<Station>>
 
 }
