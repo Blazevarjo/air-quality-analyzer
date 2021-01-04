@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model
+package com.example.airqualityanalyzer.model.entities
 
 data class Data (
     val key: String,

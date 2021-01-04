@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model
+package com.example.airqualityanalyzer.model.entities
 
 data class Param (
     val paramName: String,

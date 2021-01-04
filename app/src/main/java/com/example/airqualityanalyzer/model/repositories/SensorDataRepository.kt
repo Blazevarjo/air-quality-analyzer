@@ -1,7 +1,7 @@
 package com.example.airqualityanalyzer.model.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.airqualityanalyzer.model.SensorData
+import com.example.airqualityanalyzer.model.entities.SensorData
 import com.example.airqualityanalyzer.model.daoInterfaces.SensorDataDao
 import java.util.*
 

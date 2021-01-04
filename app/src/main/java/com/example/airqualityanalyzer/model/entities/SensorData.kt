@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model
+package com.example.airqualityanalyzer.model.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
