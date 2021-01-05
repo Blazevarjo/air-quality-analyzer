@@ -14,8 +14,8 @@ class StationRepository(private val stationDao: StationDao) {
         stationDao.addStation(station)
     }
 
-    suspend fun deleteStation(station: Station) {
-        stationDao.deleteStation(station)
+    suspend fun deleteStation(stationId: Int) {
+        stationDao.deleteStation(stationId)
     }
 
 }

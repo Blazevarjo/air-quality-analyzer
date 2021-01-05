@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_listOfStationsFragment_to_graphFragment"
             app:destination="@id/graphFragment" />
+        <action
+            android:id="@+id/action_listOfStationsFragment_to_deleteStationFragment"
+            app:destination="@id/deleteStationFragment" />
     </fragment>
     <fragment
         android:id="@+id/addStationFragment"
@@ -33,6 +36,10 @@
         <action
             android:id="@+id/action_graphFragment_to_stationOptionsFragment"
             app:destination="@id/stationOptionsFragment" />
+        <argument
+            android:name="stationId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/stationOptionsFragment"
@@ -43,4 +50,9 @@
             android:id="@+id/action_stationOptionsFragment_to_listOfStationsFragment"
             app:destination="@id/listOfStationsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/deleteStationFragment"
+        android:name="com.example.airqualityanalyzer.view.DeleteStationFragment"
+        android:label="fragment_delete_station"
+        tools:layout="@layout/fragment_delete_station" />
 </navigation>

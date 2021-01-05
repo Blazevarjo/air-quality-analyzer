@@ -2,13 +2,14 @@ package com.example.airqualityanalyzer.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentListOfStationsBinding
 import com.example.airqualityanalyzer.view_model.StationViewModel
 import com.example.airqualityanalyzer.view.adapters.ListOfStationsListAdapter
@@ -33,15 +34,28 @@ class ListOfStationsFragment : Fragment() {
     ): View {
         val viewModel = ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
 
-        myAdapter = ListOfStationsListAdapter(viewModel.stations)
+        myAdapter = ListOfStationsListAdapter(viewModel.observedStations, viewModel)
         myLayoutManager = LinearLayoutManager(context)
 
-        viewModel.stations.observe(viewLifecycleOwner, {
+        viewModel.observedStations.observe(viewLifecycleOwner, {
             myAdapter.notifyDataSetChanged()
         })
 
+        setHasOptionsMenu(true)
+
         _binding = FragmentListOfStationsBinding.inflate(inflater,container,false)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_delete, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menuButtonDelete) {
+           findNavController().navigate(R.id.action_listOfStationsFragment_to_deleteStationFragment)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +67,7 @@ class ListOfStationsFragment : Fragment() {
         }
 
         binding.buttonAddStation.setOnClickListener {
-            //TODO
+            findNavController().navigate(R.id.action_listOfStationsFragment_to_addStationFragment)
         }
     }
 
