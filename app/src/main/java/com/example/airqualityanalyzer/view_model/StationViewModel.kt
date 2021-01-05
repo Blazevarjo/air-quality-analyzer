@@ -17,6 +17,11 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
 
     val stations: LiveData<List<Station>> = ApiRepository.getAllStations()
 
+    val observedStations = stationRepository.allStations()
+
+    val selected = mutableSetOf<Station>()
+
+    lateinit var station: Station
 
     fun addStation(station: Station) {
         viewModelScope.launch {
@@ -24,10 +29,27 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun isSelected(station: Station): Boolean =
+        selected.find{ it.id == station.id } != null
+
+    fun toggleSelection(station: Station) {
+        if(isSelected(station)) {
+            selected.remove(station)
+        }
+        else {
+            selected.add(station)
+        }
+    }
+
     fun deleteStation(station: Station) {
         viewModelScope.launch {
-            stationRepository.deleteStation(station)
+            stationRepository.deleteStation(station.id)
         }
+    }
+
+    fun deleteSelectedStations() {
+        selected.forEach{ deleteStation(it) }
+        selected.clear()
     }
 
 }
