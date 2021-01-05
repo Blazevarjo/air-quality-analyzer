@@ -13,7 +13,6 @@ import retrofit2.awaitResponse
 class ApiRepository {
     companion object {
         fun getAllStations(): MutableLiveData<List<Station>> {
-//            GIOSService.api.allStations().awaitResponse().body() ?: emptyList()
             val stations = MutableLiveData<List<Station>>()
 
             val call = GIOSService.api.allStations()
