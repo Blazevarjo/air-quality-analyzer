@@ -5,20 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.airqualityanalyzer.model.AppDatabase
-import com.example.airqualityanalyzer.model.Station
+import com.example.airqualityanalyzer.model.entities.Station
+import com.example.airqualityanalyzer.model.repositories.ApiRepository
 import com.example.airqualityanalyzer.model.repositories.StationRepository
 import kotlinx.coroutines.launch
 
-class ListOfStationsViewModel(application: Application) : AndroidViewModel(application) {
+class StationViewModel(application: Application) : AndroidViewModel(application) {
 
-    val stations: LiveData<List<Station>>
-    private val stationRepository: StationRepository
+    private val stationRepository: StationRepository =
+        StationRepository(AppDatabase.getDatabase(application).stationDao())
 
-    init {
-        val stationDao = AppDatabase.getDatabase(application).stationDao()
-        stationRepository = StationRepository(stationDao)
-        stations = stationDao.allStations()
-    }
+    val stations: LiveData<List<Station>> = ApiRepository.getAllStations()
+
 
     fun addStation(station: Station) {
         viewModelScope.launch {

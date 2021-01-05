@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.airqualityanalyzer.model.Sensor
+import com.example.airqualityanalyzer.model.entities.Sensor
 
 @Dao
 interface SensorDao {

@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.view_model.adapters
+package com.example.airqualityanalyzer.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.airqualityanalyzer.R
-import com.example.airqualityanalyzer.model.Station
+import com.example.airqualityanalyzer.model.entities.Station
 
 class ListOfStationsListAdapter(var stations: LiveData<List<Station>>) :
     RecyclerView.Adapter<ListOfStationsListAdapter.Holder>() {
@@ -23,8 +23,8 @@ class ListOfStationsListAdapter(var stations: LiveData<List<Station>>) :
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        var provinceName = holder.itemView.findViewById<TextView>(R.id.textProvinceName)
-        var stationName = holder.itemView.findViewById<TextView>(R.id.textStationName)
+        val provinceName = holder.itemView.findViewById<TextView>(R.id.textProvinceName)
+        val stationName = holder.itemView.findViewById<TextView>(R.id.textStationName)
 
         provinceName.text = stations.value?.get(position)?.city?.commune?.provinceName ?: ""
         stationName.text = stations.value?.get(position)?.stationName ?: ""
