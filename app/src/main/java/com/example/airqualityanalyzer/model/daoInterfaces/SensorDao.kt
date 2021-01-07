@@ -17,8 +17,10 @@ interface SensorDao {
     suspend fun deleteSensor(sensor: Sensor)
 
     @Query("SELECT * FROM sensor")
-    fun stationSensorsSync(): List<Sensor>
+    suspend fun stationSensorsAsync(): List<Sensor>
 
+    @Query("SELECT * FROM sensor")
+    fun stationSensorsSync(): List<Sensor>
 
 
 }

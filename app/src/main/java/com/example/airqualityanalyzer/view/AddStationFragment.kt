@@ -8,36 +8,34 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentAddStationBinding
-import com.example.airqualityanalyzer.view.adapters.ListOfStationsListAdapter
+import com.example.airqualityanalyzer.view.adapters.AddStationListAdapter
+import com.example.airqualityanalyzer.view_model.SensorViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
 
 class AddStationFragment : Fragment() {
     private var _binding: FragmentAddStationBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var myAdapter: ListOfStationsListAdapter
+    private lateinit var myAdapter: AddStationListAdapter
     private lateinit var myLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var viewModel = ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
+        val stationViewModel =
+            ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
+        val sensorViewModel = ViewModelProvider(requireActivity()).get(SensorViewModel::class.java)
 
-        //TODO
-//        myAdapter = ListOfStationsListAdapter(viewModel.stations)
-//        myLayoutManager = LinearLayoutManager(context)
-//
-//        viewModel.stations.observe(viewLifecycleOwner, {
-//            myAdapter.notifyDataSetChanged()
-//        })
+        myAdapter =
+            AddStationListAdapter(stationViewModel.otherStations, stationViewModel, sensorViewModel)
+        myLayoutManager = LinearLayoutManager(context)
+
+        stationViewModel.otherStations.observe(viewLifecycleOwner, {
+            myAdapter.notifyDataSetChanged()
+        })
         _binding = FragmentAddStationBinding.inflate(inflater, container, false)
         return binding.root
     }
