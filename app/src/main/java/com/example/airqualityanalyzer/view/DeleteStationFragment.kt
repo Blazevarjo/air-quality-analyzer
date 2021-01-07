@@ -23,10 +23,6 @@ class DeleteStationFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: StationViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

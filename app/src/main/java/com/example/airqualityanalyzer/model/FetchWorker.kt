@@ -30,7 +30,6 @@ class FetchWorker(context: Context, workerParameters: WorkerParameters) :
 
                 for (values in valuesList) {
                     val sensorData = SensorData(0, sensor.id, values.date, values.value!!)
-                    Log.d("sensorData", sensorData.toString())
                     sensorDataRepository.addSensorDataSync(sensorData)
                 }
             } else {

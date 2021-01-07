@@ -12,7 +12,7 @@ data class Station (
     val gegrLat: Double,
     val gegrLon: Double,
     @Embedded
-    val city: City,
+    val city: City?,
     val addressStreet: String?
 )
 

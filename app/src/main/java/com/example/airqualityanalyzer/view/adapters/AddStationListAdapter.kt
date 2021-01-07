@@ -5,19 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.model.entities.Station
-import com.example.airqualityanalyzer.view_model.SensorDataViewModel
+import com.example.airqualityanalyzer.view_model.SensorViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
 
-class ListOfStationsListAdapter(
+class AddStationListAdapter(
     var stations: LiveData<List<Station>>,
-    var viewModel: StationViewModel,
-    var sensorDataViewModel: SensorDataViewModel
+    var stationViewModel: StationViewModel,
+    var sensorViewModel: SensorViewModel
 ) :
-    RecyclerView.Adapter<ListOfStationsListAdapter.Holder>() {
+    RecyclerView.Adapter<AddStationListAdapter.Holder>() {
 
     inner class Holder(var view: View) : RecyclerView.ViewHolder(view)
 
@@ -37,12 +36,9 @@ class ListOfStationsListAdapter(
         stationName.text = stations.value?.get(position)?.stationName ?: ""
 
         holder.itemView.setOnClickListener {
-            viewModel.station = stations.value?.get(position)!!
-
-            sensorDataViewModel.addAllSensorData()
-
-            holder.itemView.findNavController()
-                .navigate(R.id.action_listOfStationsFragment_to_graphFragment)
+            val station = stations.value?.get(position)!!
+            stationViewModel.addStation(station)
+            sensorViewModel.addSensorsByStation(station)
         }
     }
 

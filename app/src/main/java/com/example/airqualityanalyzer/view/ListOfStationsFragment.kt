@@ -1,7 +1,6 @@
 package com.example.airqualityanalyzer.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +11,7 @@ import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentListOfStationsBinding
 import com.example.airqualityanalyzer.view_model.StationViewModel
 import com.example.airqualityanalyzer.view.adapters.ListOfStationsListAdapter
+import com.example.airqualityanalyzer.view_model.SensorDataViewModel
 
 class ListOfStationsFragment : Fragment() {
     private var _binding: FragmentListOfStationsBinding? = null
@@ -22,21 +22,23 @@ class ListOfStationsFragment : Fragment() {
     private lateinit var myLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("ListofStation", "create")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel = ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
+        val stationViewModel =
+            ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
+        val sensorDataViewModel =
+            ViewModelProvider(requireActivity()).get(SensorDataViewModel::class.java)
 
-        myAdapter = ListOfStationsListAdapter(viewModel.observedStations, viewModel)
+        myAdapter = ListOfStationsListAdapter(
+            stationViewModel.observedStations,
+            stationViewModel,
+            sensorDataViewModel
+        )
         myLayoutManager = LinearLayoutManager(context)
 
-        viewModel.observedStations.observe(viewLifecycleOwner, {
+        stationViewModel.observedStations.observe(viewLifecycleOwner, {
             myAdapter.notifyDataSetChanged()
         })
 

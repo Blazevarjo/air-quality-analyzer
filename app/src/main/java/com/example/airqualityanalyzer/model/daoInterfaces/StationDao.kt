@@ -12,7 +12,7 @@ interface StationDao {
     @Insert
     suspend fun addStation(station: Station)
 
-    @Query("DELETE FROM station WHERE id = :stationId" )
+    @Query("DELETE FROM station WHERE id = :stationId")
     suspend fun deleteStation(stationId: Int)
 
     @Query("SELECT * FROM station")
