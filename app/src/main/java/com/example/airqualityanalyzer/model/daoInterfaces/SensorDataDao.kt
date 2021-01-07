@@ -1,18 +1,18 @@
 package com.example.airqualityanalyzer.model.daoInterfaces
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.airqualityanalyzer.model.entities.SensorData
 import java.util.*
 
 @Dao
 interface SensorDataDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addSensorData(sensorData: SensorData)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addSensorDataSync(sensorData: SensorData)
 
     @Delete
     suspend fun deleteSensorData(sensorData: SensorData)

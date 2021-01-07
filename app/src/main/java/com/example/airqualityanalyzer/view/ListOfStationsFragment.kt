@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +42,7 @@ class ListOfStationsFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        _binding = FragmentListOfStationsBinding.inflate(inflater,container,false)
+        _binding = FragmentListOfStationsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,8 +51,8 @@ class ListOfStationsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.menuButtonDelete) {
-           findNavController().navigate(R.id.action_listOfStationsFragment_to_deleteStationFragment)
+        if (item.itemId == R.id.menuButtonDelete) {
+            findNavController().navigate(R.id.action_listOfStationsFragment_to_deleteStationFragment)
         }
         return super.onOptionsItemSelected(item)
     }

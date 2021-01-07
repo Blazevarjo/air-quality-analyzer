@@ -25,8 +25,8 @@ class SelectStationListAdapter(var stations: LiveData<List<Station>>, var viewMo
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        var provinceName = holder.itemView.findViewById<TextView>(R.id.textProvinceName)
-        var stationName = holder.itemView.findViewById<TextView>(R.id.textStationName)
+        val provinceName = holder.itemView.findViewById<TextView>(R.id.textProvinceName)
+        val stationName = holder.itemView.findViewById<TextView>(R.id.textStationName)
         val check = holder.itemView.findViewById<ImageView>(R.id.imageViewCheck)
 
         provinceName.text = stations.value?.get(position)?.city?.commune?.provinceName ?: ""

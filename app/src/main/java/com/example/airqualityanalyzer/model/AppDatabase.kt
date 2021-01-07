@@ -8,7 +8,6 @@ import androidx.room.TypeConverters
 import com.example.airqualityanalyzer.model.daoInterfaces.SensorDao
 import com.example.airqualityanalyzer.model.daoInterfaces.SensorDataDao
 import com.example.airqualityanalyzer.model.daoInterfaces.StationDao
-import com.example.airqualityanalyzer.model.entities.Converters
 import com.example.airqualityanalyzer.model.entities.Sensor
 import com.example.airqualityanalyzer.model.entities.SensorData
 import com.example.airqualityanalyzer.model.entities.Station

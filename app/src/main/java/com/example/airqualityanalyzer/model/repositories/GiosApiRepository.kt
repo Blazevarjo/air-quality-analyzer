@@ -1,6 +1,8 @@
 package com.example.airqualityanalyzer.model.repositories
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.work.ListenableWorker
 import com.example.airqualityanalyzer.model.entities.Data
 import com.example.airqualityanalyzer.model.entities.Sensor
 import com.example.airqualityanalyzer.model.entities.Station
@@ -9,8 +11,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
+import java.io.IOException
+import java.util.Locale.filter
 
-class ApiRepository {
+class GiosApiRepository {
     companion object {
         fun getAllStations(): MutableLiveData<List<Station>> {
             val stations = MutableLiveData<List<Station>>()
@@ -62,25 +66,25 @@ class ApiRepository {
             return sensors
         }
 
-        fun getSensorDataById(sensorId: Int): MutableLiveData<Data> {
-            val data = MutableLiveData<Data>()
+        fun getSensorDataByIdSync(sensorId: Int): Data? {
+            try {
+                val call = GIOSService.api.sensorDataById(sensorId)
+                val response = call.execute()
 
-            val call = GIOSService.api.sensorDataById(sensorId)
-            call.enqueue(object : Callback<Data> {
-                override fun onResponse(call: Call<Data>, response: Response<Data>) {
-                    if (response.isSuccessful) {
-                        data.postValue(response.body())
-                    } else {
-                        TODO("Not yet implemented")
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null) {
+                        data.values = data.values.filter {
+                            it.value != null
+                        }
+                        return data
                     }
                 }
-
-                override fun onFailure(call: Call<Data>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-            return data
+                return null
+            } catch (error: IOException) {
+                Log.e("Api data sensors", error.message ?: "")
+                return null
+            }
         }
     }
 }
