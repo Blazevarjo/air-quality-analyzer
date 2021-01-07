@@ -6,9 +6,7 @@ import com.example.airqualityanalyzer.model.daoInterfaces.SensorDao
 
 class SensorRepository(private val sensorDao: SensorDao) {
 
-    fun stationSensors(stationId: Int): LiveData<List<Sensor>> {
-        return sensorDao.stationSensors(stationId)
-    }
+    fun stationSensorsSync(): List<Sensor> = sensorDao.stationSensorsSync()
 
     suspend fun addSensor(sensor: Sensor) {
         sensorDao.addSensor(sensor)

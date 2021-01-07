@@ -1,4 +1,4 @@
-package com.example.airqualityanalyzer.model.entities
+package com.example.airqualityanalyzer.model
 
 import androidx.room.TypeConverter
 import java.util.*

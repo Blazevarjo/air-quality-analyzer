@@ -15,6 +15,10 @@ class SensorDataRepository(private val sensorDataDao: SensorDataDao) {
         sensorDataDao.addSensorData(sensorData)
     }
 
+    fun addSensorDataSync(sensorData: SensorData) {
+        sensorDataDao.addSensorDataSync(sensorData)
+    }
+
     suspend fun deleteSensorData(sensorData: SensorData) {
         sensorDataDao.deleteSensorData(sensorData)
     }

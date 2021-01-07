@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.airqualityanalyzer.model.AppDatabase
 import com.example.airqualityanalyzer.model.entities.Station
-import com.example.airqualityanalyzer.model.repositories.ApiRepository
+import com.example.airqualityanalyzer.model.repositories.GiosApiRepository
 import com.example.airqualityanalyzer.model.repositories.StationRepository
 import kotlinx.coroutines.launch
 
@@ -15,7 +15,7 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
     private val stationRepository: StationRepository =
         StationRepository(AppDatabase.getDatabase(application).stationDao())
 
-    val stations: LiveData<List<Station>> = ApiRepository.getAllStations()
+    val stations: LiveData<List<Station>> = GiosApiRepository.getAllStations()
 
     val observedStations = stationRepository.allStations()
 

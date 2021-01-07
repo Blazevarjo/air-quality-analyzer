@@ -16,7 +16,9 @@ interface SensorDao {
     @Delete
     suspend fun deleteSensor(sensor: Sensor)
 
-    @Query("SELECT * FROM sensor WHERE stationId = :stationId")
-    fun stationSensors(stationId: Int): LiveData<List<Sensor>>
+    @Query("SELECT * FROM sensor")
+    fun stationSensorsSync(): List<Sensor>
+
+
 
 }
