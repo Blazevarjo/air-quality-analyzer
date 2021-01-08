@@ -17,7 +17,7 @@ interface SensorDao {
     suspend fun deleteSensor(sensor: Sensor)
 
     @Query("SELECT * FROM sensor WHERE stationId = :stationId")
-    suspend fun stationSensorsByStationIdAsync(stationId: Int): List<Sensor>
+    suspend fun stationSensors(stationId: Int): List<Sensor>
 
     @Query("SELECT * FROM sensor")
     fun stationSensorsSync(): List<Sensor>

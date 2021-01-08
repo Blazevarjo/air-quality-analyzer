@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">Air Quality Analyzer</string>
     <string name="delete">Delete</string>
+    <string name="tune">tune</string>
+    <string name="sensors">Sensory</string>
+    <string name="c6h6">C6H6</string>
+    <string name="o3">O3</string>
+    <string name="pm25">PM25</string>
+    <string name="pm10">PM10</string>
+    <string name="co">CO</string>
+    <string name="no2">NO2</string>
+    <string name="so2">SO2</string>
+    <string name="date">Data</string>
+    <string name="from">Od</string>
+    <string name="to">Do</string>
+    <string name="observedStations">Obserwowane stacje</string>
+    <string name="graph">graf</string>
+    <string name="chart">Wykres</string>
+    <string name="average">Średnia (μg/m3)</string>
+    <string name="min">Minimum (μg/m3)</string>
+    <string name="max">Maksimum (μg/m3)</string>
+    <string name="median">Mediana (μg/m3)</string>
+    <string name="std">Odchylenie standardowe (μg/m3)</string>
 </resources>
