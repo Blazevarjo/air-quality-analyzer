@@ -7,7 +7,8 @@ class SensorRepository(private val sensorDao: SensorDao) {
 
     fun stationSensorsSync(): List<Sensor> = sensorDao.stationSensorsSync()
 
-    suspend fun stationSensorsAsync() = sensorDao.stationSensorsAsync()
+    suspend fun stationSensorsByStationIdAsync(stationId: Int) =
+        sensorDao.stationSensorsByStationIdAsync(stationId)
 
 
     suspend fun addSensor(sensor: Sensor) {

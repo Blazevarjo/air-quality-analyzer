@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.airqualityanalyzer.model.AppDatabase
 import com.example.airqualityanalyzer.model.entities.SensorData
+import com.example.airqualityanalyzer.model.entities.Station
 import com.example.airqualityanalyzer.model.repositories.GiosApiRepository
 import com.example.airqualityanalyzer.model.repositories.SensorDataRepository
 import com.example.airqualityanalyzer.model.repositories.SensorRepository
@@ -17,9 +18,9 @@ class SensorDataViewModel(application: Application) : AndroidViewModel(applicati
     private val sensorDataRepository =
         SensorDataRepository(AppDatabase.getDatabase(application).sensorDataDao())
 
-    fun addAllSensorData() {
+    fun addAllSensorDataByStationId(station: Station) {
         viewModelScope.launch {
-            val sensors = sensorRepository.stationSensorsAsync()
+            val sensors = sensorRepository.stationSensorsByStationIdAsync(station.id)
             for (sensor in sensors) {
                 val data = GiosApiRepository.getSensorDataByIdAsync(sensor.id)
 

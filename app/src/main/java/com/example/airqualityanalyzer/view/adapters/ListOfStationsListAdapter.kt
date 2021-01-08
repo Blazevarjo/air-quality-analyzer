@@ -37,9 +37,10 @@ class ListOfStationsListAdapter(
         stationName.text = stations.value?.get(position)?.stationName ?: ""
 
         holder.itemView.setOnClickListener {
-            viewModel.station = stations.value?.get(position)!!
+            val station = stations.value?.get(position)!!
+            viewModel.station = station
 
-            sensorDataViewModel.addAllSensorData()
+            sensorDataViewModel.addAllSensorDataByStationId(station)
 
             holder.itemView.findNavController()
                 .navigate(R.id.action_listOfStationsFragment_to_graphFragment)
