@@ -79,7 +79,7 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateMax() {
-        if(sensorData.value != null) {
+        if(sensorData.value != null || sensorData.value?.isEmpty() == false) {
             var tmpMax = Double.MIN_VALUE
 
             sensorData.value!!.forEach {
@@ -96,7 +96,7 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateMin() {
-        if(sensorData.value != null) {
+        if(sensorData.value != null || sensorData.value?.isEmpty() == false) {
             var tmpMin = Double.MAX_VALUE
 
             sensorData.value!!.forEach {
@@ -113,7 +113,7 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateStd() {
-        if(sensorData.value != null) {
+        if(sensorData.value != null || sensorData.value?.isEmpty() == false) {
             var avg = 0.0
             var tmpStd = 0.0
 
@@ -135,7 +135,7 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateAvg() {
-        if(sensorData.value != null) {
+        if(sensorData.value != null || sensorData.value?.isEmpty() == false) {
             var sum = 0.0
 
             sensorData.value!!.forEach {

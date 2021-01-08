@@ -50,25 +50,16 @@ class GraphFragment : Fragment() {
         binding.editTextDateBegin.inputType = InputType.TYPE_NULL
         binding.editTextDateEnd.inputType = InputType.TYPE_NULL
 
+        binding.toolbar.title = viewModel.station?.stationName
+
         binding.editTextDateBegin.setOnClickListener {
             showDateBeginDialog()
-        }
-
-        binding.editTextDateBegin.setOnFocusChangeListener{ v, hasFocus ->
-            if(hasFocus) {
-                showDateBeginDialog()
-            }
         }
 
         binding.editTextDateEnd.setOnClickListener {
             showDateEndDialog()
         }
 
-        binding.editTextDateEnd.setOnFocusChangeListener{ v, hasFocus ->
-            if(hasFocus) {
-                showDateEndDialog()
-            }
-        }
     }
 
     fun showDateBeginDialog() {
