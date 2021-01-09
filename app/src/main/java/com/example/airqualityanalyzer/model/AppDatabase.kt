@@ -11,6 +11,7 @@ import com.example.airqualityanalyzer.model.daoInterfaces.StationDao
 import com.example.airqualityanalyzer.model.entities.Sensor
 import com.example.airqualityanalyzer.model.entities.SensorData
 import com.example.airqualityanalyzer.model.entities.Station
+import com.example.airqualityanalyzer.utils.Converters
 
 @Database(entities = [Station::class, Sensor::class, SensorData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

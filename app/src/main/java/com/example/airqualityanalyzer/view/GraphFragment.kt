@@ -2,6 +2,7 @@ package com.example.airqualityanalyzer.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -10,11 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentGraphBinding
+import com.example.airqualityanalyzer.model.entities.SensorData
+import com.example.airqualityanalyzer.utils.XAxisDateFormatter
+import com.example.airqualityanalyzer.utils.YAxisUnitFormatter
 import com.example.airqualityanalyzer.view_model.GraphViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.chip.Chip
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
@@ -67,6 +76,9 @@ class GraphFragment : Fragment() {
             showDateEndDialog()
         }
 
+        binding.smallChart.setOnClickListener {
+            findNavController().navigate(R.id.action_graphFragment_to_lineChartFragment)
+        }
     }
 
     override fun onDestroyView() {
@@ -173,6 +185,7 @@ class GraphFragment : Fragment() {
 
         viewModel.selectedSensor.observe(viewLifecycleOwner, {
             viewModel.updateSensorData()
+            binding.sensorParam.text = "Sensor: ${it.param.paramCode}"
         })
 
         viewModel.dateBegin.observe(viewLifecycleOwner, {
@@ -191,8 +204,9 @@ class GraphFragment : Fragment() {
             )
         })
 
-        viewModel.sensorData.observe(viewLifecycleOwner, {
+        viewModel.sensorData.observe(viewLifecycleOwner, { sensorDataList ->
             viewModel.updateProperties()
+            initChart(sensorDataList)
         })
 
         viewModel.max.observe(viewLifecycleOwner, {
@@ -210,6 +224,46 @@ class GraphFragment : Fragment() {
         viewModel.avg.observe(viewLifecycleOwner, {
             binding.textViewAvg.text = viewModel.avg.value?.round(2).toString()
         })
+    }
+
+    private fun initChart(sensorDataList: List<SensorData>) {
+
+        val chart = binding.smallChart
+
+        chart.fitScreen()
+
+        val entries = arrayListOf<Entry>()
+        for (data in sensorDataList) {
+            entries.add(Entry(data.date.time.toFloat(), data.value.toFloat()))
+        }
+
+        val dataSet = LineDataSet(entries, "Values")
+        dataSet.setDrawCircles(false)
+        dataSet.fillColor = Color.LTGRAY
+        dataSet.color = Color.GREEN
+        dataSet.setDrawValues(false)
+        dataSet.setDrawFilled(true)
+        dataSet.isHighlightEnabled = false
+
+        val lineData = LineData(dataSet)
+
+        chart.data = lineData
+
+        chart.description.isEnabled = false
+        chart.description.textColor = Color.WHITE
+        chart.legend.isEnabled = false
+        chart.axisLeft.textColor = Color.WHITE
+        chart.axisRight.isEnabled = false
+        chart.xAxis.valueFormatter = XAxisDateFormatter()
+        chart.xAxis.textColor = Color.WHITE
+        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart.xAxis.labelCount = 3
+        chart.xAxis.isGranularityEnabled = true
+        chart.xAxis.granularity = 1.0f
+        chart.setExtraOffsets(0f, 0f, 40f, 0f)
+        chart.axisLeft.valueFormatter = YAxisUnitFormatter()
+
+        chart.invalidate()
     }
 
     private fun Double.round(decimals: Int): Double {

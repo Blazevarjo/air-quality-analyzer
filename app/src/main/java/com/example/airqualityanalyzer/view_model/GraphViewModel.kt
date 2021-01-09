@@ -1,7 +1,6 @@
 package com.example.airqualityanalyzer.view_model
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.airqualityanalyzer.model.AppDatabase
 import com.example.airqualityanalyzer.model.entities.Sensor
@@ -62,8 +61,6 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
                     dateBegin.value!!,
                     dateEnd.value!!
                 )
-                Log.v("debug", selectedSensor.value.toString())
-                Log.v("debug", sensorData.value.toString())
             }
         }
     }

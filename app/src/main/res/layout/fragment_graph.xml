@@ -231,17 +231,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="194dp"
-                        android:contentDescription="@string/graph"
-                        android:scaleType="centerCrop" />
-
                     <TextView
+                        android:id="@+id/sensorParam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:text="@string/chart" />
+                        android:textSize="40sp"
+                        android:textAlignment="center"/>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/smallChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginBottom="16dp"/>
+
+
 
                 </LinearLayout>
 

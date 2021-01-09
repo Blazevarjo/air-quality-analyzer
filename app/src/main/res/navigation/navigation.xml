@@ -33,10 +33,18 @@
             android:name="stationId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_graphFragment_to_lineChartFragment"
+            app:destination="@id/lineChartFragment" />
     </fragment>
     <fragment
         android:id="@+id/deleteStationFragment"
         android:name="com.example.airqualityanalyzer.view.DeleteStationFragment"
         android:label="fragment_delete_station"
         tools:layout="@layout/fragment_delete_station" />
+    <fragment
+        android:id="@+id/lineChartFragment"
+        android:name="com.example.airqualityanalyzer.view.LineChartFragment"
+        android:label="fragment_line_chart"
+        tools:layout="@layout/fragment_line_chart" />
 </navigation>
