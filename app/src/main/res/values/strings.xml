@@ -5,7 +5,7 @@
     <string name="sensors">Sensory</string>
     <string name="c6h6">C6H6</string>
     <string name="o3">O3</string>
-    <string name="pm25">PM25</string>
+    <string name="pm25">PM2.5</string>
     <string name="pm10">PM10</string>
     <string name="co">CO</string>
     <string name="no2">NO2</string>

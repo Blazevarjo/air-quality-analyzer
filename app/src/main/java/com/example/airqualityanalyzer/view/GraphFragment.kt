@@ -2,17 +2,28 @@ package com.example.airqualityanalyzer.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentGraphBinding
+import com.example.airqualityanalyzer.model.entities.SensorData
+import com.example.airqualityanalyzer.utils.XAxisDateFormatter
+import com.example.airqualityanalyzer.utils.YAxisUnitFormatter
 import com.example.airqualityanalyzer.view_model.GraphViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.chip.Chip
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
@@ -23,6 +34,9 @@ class GraphFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: GraphViewModel
+    private lateinit var stationViewModel: StationViewModel
+
+    private lateinit var chips: Sequence<Chip>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +45,9 @@ class GraphFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
         viewModel = ViewModelProvider(requireActivity()).get(GraphViewModel::class.java)
-        viewModel.station = ViewModelProvider(requireActivity()).get(StationViewModel::class.java).station
+        stationViewModel = ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
+
+        viewModel.initStationSensors(stationViewModel.station)
 
         setObservers()
 
@@ -41,16 +57,16 @@ class GraphFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        chips = binding.chipGroupSensors.children as Sequence<Chip>
 
         binding.chipGroupSensors.setOnCheckedChangeListener { group, checkedId ->
             viewModel.setSelectedSensorByParamCode(group.findViewById<Chip>(checkedId).text.toString())
-            changeChipSelection()
         }
 
         binding.editTextDateBegin.inputType = InputType.TYPE_NULL
         binding.editTextDateEnd.inputType = InputType.TYPE_NULL
 
-        binding.toolbar.title = viewModel.station?.stationName
+        binding.toolbar.title = stationViewModel.station.stationName
 
         binding.editTextDateBegin.setOnClickListener {
             showDateBeginDialog()
@@ -60,138 +76,137 @@ class GraphFragment : Fragment() {
             showDateEndDialog()
         }
 
+        binding.smallChart.setOnClickListener {
+            findNavController().navigate(R.id.action_graphFragment_to_lineChartFragment)
+        }
     }
 
-    fun showDateBeginDialog() {
-        var calendar = Calendar.getInstance()
-        var dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun showDateBeginDialog() {
+        val calendar = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            var timeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
 
                 viewModel.dateBegin.value = calendar.time
             }
 
-            TimePickerDialog(context,
+            TimePickerDialog(
+                context,
                 timeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
-                true)
+                true
+            )
                 .show()
         }
 
-        DatePickerDialog(requireContext(),
+        DatePickerDialog(
+            requireContext(),
             dateSetListener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH))
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
             .show()
     }
 
-    fun showDateEndDialog() {
-        var calendar = Calendar.getInstance()
-        var dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+    private fun showDateEndDialog() {
+        val calendar = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            var timeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
 
                 viewModel.dateEnd.value = calendar.time
             }
 
-            TimePickerDialog(context,
+            TimePickerDialog(
+                context,
                 timeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
-                true)
+                true
+            )
                 .show()
         }
 
-        DatePickerDialog(requireContext(),
+        DatePickerDialog(
+            requireContext(),
             dateSetListener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH))
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
             .show()
     }
 
-    fun initChips() {
-        binding.chipSO2.isEnabled = false
-        binding.chipC6H6.isEnabled = false
-        binding.chipCO.isEnabled = false
-        binding.chipNO2.isEnabled = false
-        binding.chipO3.isEnabled = false
-        binding.chipPM10.isEnabled = false
-        binding.chipPM25.isEnabled = false
+    private fun initChips() {
+        //Disable all chips
+        for (chip in chips) {
+            chip.isEnabled = false
+        }
 
-        var sensors = viewModel.stationSensors
-        sensors.value?.forEach {
-            when(it.param.paramCode) {
-                "SO2" -> {binding.chipSO2.isEnabled = true}
-                "C6H6" -> {binding.chipC6H6.isEnabled = true}
-                "CO" -> {binding.chipCO.isEnabled = true}
-                "NO2" -> {binding.chipNO2.isEnabled = true}
-                "O3" -> {binding.chipO3.isEnabled = true}
-                "PM10" -> {binding.chipPM10.isEnabled = true}
-                "PM25" -> {binding.chipPM25.isEnabled = true}
+        val sensors = viewModel.stationSensors
+
+        //Enable chips when sensor with specific paramCode exist
+        sensors.value?.forEach { sensor ->
+            val chip = chips.find {
+                Log.e("sensor param", sensor.param.paramCode)
+                it.text == sensor.param.paramCode
             }
+            chip?.isEnabled = true
         }
+
+        // Check default sensor
+        chips.find {
+            it.text == viewModel.selectedSensor.value?.param?.paramCode
+        }?.isChecked = true
     }
 
-    fun changeChipSelection() {
-        binding.chipSO2.isSelected = false
-        binding.chipC6H6.isSelected = false
-        binding.chipCO.isSelected = false
-        binding.chipNO2.isSelected = false
-        binding.chipO3.isSelected = false
-        binding.chipPM10.isSelected = false
-        binding.chipPM25.isSelected = false
-
-        when(viewModel.selectedSensor.value?.param?.paramCode) {
-            "SO2" -> {binding.chipSO2.isSelected = true}
-            "C6H6" -> {binding.chipC6H6.isSelected = true}
-            "CO" -> {binding.chipCO.isSelected = true}
-            "NO2" -> {binding.chipNO2.isSelected = true}
-            "O3" -> {binding.chipO3.isSelected = true}
-            "PM10" -> {binding.chipPM10.isSelected = true}
-            "PM25" -> {binding.chipPM25.isSelected = true}
-        }
-    }
-
-
-
-    fun setObservers() {
-        viewModel.stationSensors.observe(viewLifecycleOwner,{
+    private fun setObservers() {
+        viewModel.stationSensors.observe(viewLifecycleOwner, {
             viewModel.setSelectedSensorToDefault()
             initChips()
         })
 
-        viewModel.selectedSensor.observe(viewLifecycleOwner,{
+        viewModel.selectedSensor.observe(viewLifecycleOwner, {
             viewModel.updateSensorData()
-            changeChipSelection()
+            binding.sensorParam.text = "Sensor: ${it.param.paramCode}"
         })
 
-        viewModel.dateBegin.observe(viewLifecycleOwner,{
+        viewModel.dateBegin.observe(viewLifecycleOwner, {
             viewModel.updateSensorData()
-            var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
-            binding.editTextDateBegin.setText(simpleDateFormat.format(viewModel.dateBegin.value!!).toString())
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+            binding.editTextDateBegin.setText(
+                simpleDateFormat.format(viewModel.dateBegin.value!!).toString()
+            )
         })
 
-        viewModel.dateEnd.observe(viewLifecycleOwner,{
+        viewModel.dateEnd.observe(viewLifecycleOwner, {
             viewModel.updateSensorData()
-            var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
-            binding.editTextDateEnd.setText(simpleDateFormat.format(viewModel.dateEnd.value!!).toString())
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+            binding.editTextDateEnd.setText(
+                simpleDateFormat.format(viewModel.dateEnd.value!!).toString()
+            )
         })
 
-        viewModel.sensorData.observe(viewLifecycleOwner,{
+        viewModel.sensorData.observe(viewLifecycleOwner, { sensorDataList ->
             viewModel.updateProperties()
+            initChart(sensorDataList)
         })
 
         viewModel.max.observe(viewLifecycleOwner, {
@@ -211,15 +226,49 @@ class GraphFragment : Fragment() {
         })
     }
 
-    fun Double.round(decimals: Int): Double {
+    private fun initChart(sensorDataList: List<SensorData>) {
+
+        val chart = binding.smallChart
+
+        chart.fitScreen()
+
+        val entries = arrayListOf<Entry>()
+        for (data in sensorDataList) {
+            entries.add(Entry(data.date.time.toFloat(), data.value.toFloat()))
+        }
+
+        val dataSet = LineDataSet(entries, "Values")
+        dataSet.setDrawCircles(false)
+        dataSet.fillColor = Color.LTGRAY
+        dataSet.color = Color.GREEN
+        dataSet.setDrawValues(false)
+        dataSet.setDrawFilled(true)
+        dataSet.isHighlightEnabled = false
+
+        val lineData = LineData(dataSet)
+
+        chart.data = lineData
+
+        chart.description.isEnabled = false
+        chart.description.textColor = Color.WHITE
+        chart.legend.isEnabled = false
+        chart.axisLeft.textColor = Color.WHITE
+        chart.axisRight.isEnabled = false
+        chart.xAxis.valueFormatter = XAxisDateFormatter()
+        chart.xAxis.textColor = Color.WHITE
+        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart.xAxis.labelCount = 3
+        chart.xAxis.isGranularityEnabled = true
+        chart.xAxis.granularity = 1.0f
+        chart.setExtraOffsets(0f, 0f, 40f, 0f)
+        chart.axisLeft.valueFormatter = YAxisUnitFormatter()
+
+        chart.invalidate()
+    }
+
+    private fun Double.round(decimals: Int): Double {
         var multiplier = 1.0
         repeat(decimals) { multiplier *= 10 }
         return round(this * multiplier) / multiplier
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

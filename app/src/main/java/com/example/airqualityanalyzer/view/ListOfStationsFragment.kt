@@ -2,6 +2,7 @@ package com.example.airqualityanalyzer.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,8 @@ class ListOfStationsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+
         val stationViewModel =
             ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
         val sensorDataViewModel =
