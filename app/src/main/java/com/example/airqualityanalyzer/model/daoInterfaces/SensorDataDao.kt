@@ -17,7 +17,7 @@ interface SensorDataDao {
     @Delete
     suspend fun deleteSensorData(sensorData: SensorData)
 
-    @Query("SELECT * FROM sensor_data WHERE id = :sensorId AND date > :begin AND date < :end")
-    fun sensorDataBetween(sensorId: Int, begin: Date, end: Date): LiveData<List<SensorData>>
+    @Query("SELECT * FROM sensor_data WHERE sensorId = :sensorId AND date > :begin AND date < :end")
+    suspend fun sensorDataBetween(sensorId: Int, begin: Date, end: Date): List<SensorData>
 
 }

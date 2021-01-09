@@ -7,7 +7,7 @@ import java.util.*
 
 class SensorDataRepository(private val sensorDataDao: SensorDataDao) {
 
-    fun sensorData(sensorId: Int, begin: Date, end: Date ): LiveData<List<SensorData>> {
+    suspend fun sensorData(sensorId: Int, begin: Date, end: Date ): List<SensorData> {
         return sensorDataDao.sensorDataBetween(sensorId, begin, end)
     }
 
