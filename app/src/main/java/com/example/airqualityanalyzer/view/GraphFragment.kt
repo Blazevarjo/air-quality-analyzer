@@ -19,6 +19,7 @@ import com.example.airqualityanalyzer.utils.XAxisDateFormatter
 import com.example.airqualityanalyzer.utils.YAxisUnitFormatter
 import com.example.airqualityanalyzer.view_model.GraphViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -37,6 +38,7 @@ class GraphFragment : Fragment() {
     private lateinit var stationViewModel: StationViewModel
 
     private lateinit var chips: Sequence<Chip>
+    private lateinit var chart: LineChart
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +49,6 @@ class GraphFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(GraphViewModel::class.java)
         stationViewModel = ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
 
-        viewModel.initStationSensors(stationViewModel.station)
-
         setObservers()
 
         _binding = FragmentGraphBinding.inflate(inflater, container, false)
@@ -58,6 +58,7 @@ class GraphFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chips = binding.chipGroupSensors.children as Sequence<Chip>
+        chart = binding.smallChart
 
         binding.chipGroupSensors.setOnCheckedChangeListener { group, checkedId ->
             viewModel.setSelectedSensorByParamCode(group.findViewById<Chip>(checkedId).text.toString())
@@ -76,9 +77,13 @@ class GraphFragment : Fragment() {
             showDateEndDialog()
         }
 
-        binding.smallChart.setOnClickListener {
+
+        chart.setOnClickListener {
             findNavController().navigate(R.id.action_graphFragment_to_lineChartFragment)
         }
+
+        initChart()
+
     }
 
     override fun onDestroyView() {
@@ -206,7 +211,7 @@ class GraphFragment : Fragment() {
 
         viewModel.sensorData.observe(viewLifecycleOwner, { sensorDataList ->
             viewModel.updateProperties()
-            initChart(sensorDataList)
+            setDataChart(sensorDataList)
         })
 
         viewModel.max.observe(viewLifecycleOwner, {
@@ -226,12 +231,27 @@ class GraphFragment : Fragment() {
         })
     }
 
-    private fun initChart(sensorDataList: List<SensorData>) {
+    private fun initChart() {
+        chart.setNoDataText("Loading")
+        chart.description.isEnabled = false
+        chart.description.textColor = Color.WHITE
+        chart.legend.isEnabled = false
+        chart.axisLeft.textColor = Color.WHITE
+        chart.axisRight.isEnabled = false
+        chart.xAxis.valueFormatter = XAxisDateFormatter()
+        chart.xAxis.textColor = Color.WHITE
+        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart.xAxis.labelCount = 3
+        chart.xAxis.isGranularityEnabled = true
+        chart.xAxis.granularity = 1.0f
+        chart.setExtraOffsets(0f, 0f, 40f, 0f)
+        chart.axisLeft.valueFormatter = YAxisUnitFormatter()
 
-        val chart = binding.smallChart
+        chart.invalidate()
+    }
 
+    private fun setDataChart(sensorDataList: List<SensorData>){
         chart.fitScreen()
-
         val entries = arrayListOf<Entry>()
         for (data in sensorDataList) {
             entries.add(Entry(data.date.time.toFloat(), data.value.toFloat()))
@@ -248,21 +268,6 @@ class GraphFragment : Fragment() {
         val lineData = LineData(dataSet)
 
         chart.data = lineData
-
-        chart.description.isEnabled = false
-        chart.description.textColor = Color.WHITE
-        chart.legend.isEnabled = false
-        chart.axisLeft.textColor = Color.WHITE
-        chart.axisRight.isEnabled = false
-        chart.xAxis.valueFormatter = XAxisDateFormatter()
-        chart.xAxis.textColor = Color.WHITE
-        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chart.xAxis.labelCount = 3
-        chart.xAxis.isGranularityEnabled = true
-        chart.xAxis.granularity = 1.0f
-        chart.setExtraOffsets(0f, 0f, 40f, 0f)
-        chart.axisLeft.valueFormatter = YAxisUnitFormatter()
-
         chart.invalidate()
     }
 

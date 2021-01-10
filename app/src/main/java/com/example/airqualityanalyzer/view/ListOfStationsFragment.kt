@@ -12,6 +12,7 @@ import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.databinding.FragmentListOfStationsBinding
 import com.example.airqualityanalyzer.view_model.StationViewModel
 import com.example.airqualityanalyzer.view.adapters.ListOfStationsListAdapter
+import com.example.airqualityanalyzer.view_model.GraphViewModel
 import com.example.airqualityanalyzer.view_model.SensorDataViewModel
 
 class ListOfStationsFragment : Fragment() {
@@ -33,11 +34,13 @@ class ListOfStationsFragment : Fragment() {
             ViewModelProvider(requireActivity()).get(StationViewModel::class.java)
         val sensorDataViewModel =
             ViewModelProvider(requireActivity()).get(SensorDataViewModel::class.java)
-
+        val graphViewModel =
+            ViewModelProvider(requireActivity()).get(GraphViewModel::class.java)
         myAdapter = ListOfStationsListAdapter(
             stationViewModel.observedStations,
             stationViewModel,
-            sensorDataViewModel
+            sensorDataViewModel,
+            graphViewModel
         )
         myLayoutManager = LinearLayoutManager(context)
 

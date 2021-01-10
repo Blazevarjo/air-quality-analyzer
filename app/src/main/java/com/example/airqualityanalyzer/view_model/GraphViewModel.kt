@@ -1,6 +1,7 @@
 package com.example.airqualityanalyzer.view_model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.airqualityanalyzer.model.AppDatabase
 import com.example.airqualityanalyzer.model.entities.Sensor
@@ -39,6 +40,7 @@ class GraphViewModel(application: Application) : AndroidViewModel(application) {
 
     fun initStationSensors(station: Station) {
         viewModelScope.launch {
+            Log.e("init","station sensors")
             stationSensors.value = sensorRepository.stationSensors(station.id)
         }
     }
