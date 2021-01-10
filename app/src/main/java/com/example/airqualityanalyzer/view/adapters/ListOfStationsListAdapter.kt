@@ -9,13 +9,18 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.airqualityanalyzer.R
 import com.example.airqualityanalyzer.model.entities.Station
+import com.example.airqualityanalyzer.view_model.GraphViewModel
 import com.example.airqualityanalyzer.view_model.SensorDataViewModel
 import com.example.airqualityanalyzer.view_model.StationViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ListOfStationsListAdapter(
     var stations: LiveData<List<Station>>,
     var viewModel: StationViewModel,
-    var sensorDataViewModel: SensorDataViewModel
+    var sensorDataViewModel: SensorDataViewModel,
+    var graphViewModel: GraphViewModel
 ) :
     RecyclerView.Adapter<ListOfStationsListAdapter.Holder>() {
 
@@ -40,7 +45,10 @@ class ListOfStationsListAdapter(
             val station = stations.value?.get(position)!!
             viewModel.station = station
 
-            sensorDataViewModel.addAllSensorDataByStationId(station)
+            GlobalScope.launch(Dispatchers.IO) {
+                sensorDataViewModel.addAllSensorDataByStationId(station).join()
+                graphViewModel.initStationSensors(station)
+            }
 
             holder.itemView.findNavController()
                 .navigate(R.id.action_listOfStationsFragment_to_graphFragment)
