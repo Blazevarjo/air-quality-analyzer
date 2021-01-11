@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "fetchWork",
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.KEEP,
             fetchWorkRequest
         )
     }

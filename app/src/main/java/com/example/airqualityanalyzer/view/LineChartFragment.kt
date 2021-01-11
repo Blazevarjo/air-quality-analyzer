@@ -80,7 +80,7 @@ class LineChartFragment : Fragment() {
 
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
-            chart.setExtraOffsets(0f, 0f, 40f, 0f)
+            chart.setExtraOffsets(5f, 0f, 60f, 0f)
             chart.marker = CustomMarker(activity, R.layout.marker_layout)
 
             chart.axisLeft.textColor = Color.WHITE

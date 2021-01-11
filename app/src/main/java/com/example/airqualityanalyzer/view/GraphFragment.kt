@@ -241,9 +241,9 @@ class GraphFragment : Fragment() {
         chart.xAxis.valueFormatter = XAxisDateFormatter()
         chart.xAxis.textColor = Color.WHITE
         chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chart.xAxis.labelCount = 3
         chart.xAxis.isGranularityEnabled = true
         chart.xAxis.granularity = 1.0f
+        chart.xAxis.setLabelCount(3,true)
         chart.setExtraOffsets(0f, 0f, 40f, 0f)
         chart.axisLeft.valueFormatter = YAxisUnitFormatter()
 
