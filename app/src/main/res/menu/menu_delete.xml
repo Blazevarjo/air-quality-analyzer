@@ -4,8 +4,26 @@
 
     <item
         android:id="@+id/menuButtonDelete"
+        android:checkable="true"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuButtonMore"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:title="@string/more"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/workerStatus"
+                android:title="@string/dataDownload"
+                android:visible="true"
+                android:enabled="true"
+                android:checkable="true"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
 </menu>
