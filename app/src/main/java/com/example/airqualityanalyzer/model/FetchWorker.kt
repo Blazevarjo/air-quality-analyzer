@@ -13,7 +13,7 @@ class FetchWorker(context: Context, workerParameters: WorkerParameters) :
     Worker(context, workerParameters) {
 
     override fun doWork(): Result {
-        Log.i("FetchWorker", "Doing work")
+        Log.e("FetchWorker", "Doing work")
 
         val sensorRepository =
             SensorRepository(AppDatabase.getDatabase(applicationContext).sensorDao())
@@ -38,5 +38,9 @@ class FetchWorker(context: Context, workerParameters: WorkerParameters) :
         }
 
         return Result.success()
+    }
+    override fun onStopped() {
+        super.onStopped()
+        Log.e("FetchWorker","Stopping")
     }
 }

@@ -21,4 +21,6 @@
     <string name="max">Maksimum (μg/m3)</string>
     <string name="median">Mediana (μg/m3)</string>
     <string name="std">Odchylenie standardowe (μg/m3)</string>
+    <string name="more">more</string>
+    <string name="dataDownload">Działanie w tle</string>
 </resources>
